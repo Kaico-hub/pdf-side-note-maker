@@ -3,7 +3,6 @@ from pypdf.generic import RectangleObject
 from reportlab.pdfgen import canvas
 from reportlab.lib.colors import lightgrey
 import io
-import os
 
 
 def create_note_background(width, height, note_x, ruled=True):
@@ -79,76 +78,3 @@ def add_note_area(input_pdf, output_pdf, note_ratio=1.0, ruled=True):
         writer.write(f)
 
 
-def ask_input_pdf():
-    while True:
-        input_pdf = input("入力PDFファイル名を入力してください: ").strip().strip('"')
-
-        if not input_pdf:
-            print("ファイル名が空です。もう一度入力してください。")
-            continue
-
-        if not os.path.exists(input_pdf):
-            print(f"ファイルが見つかりません: {input_pdf}")
-            continue
-
-        if not input_pdf.lower().endswith(".pdf"):
-            print("PDFファイルを指定してください。")
-            continue
-
-        return input_pdf
-
-
-def ask_output_pdf(input_pdf):
-    default_name = os.path.splitext(input_pdf)[0] + "_with_notes.pdf"
-
-    output_pdf = input(f"出力PDFファイル名を入力してください [{default_name}]: ").strip().strip('"')
-
-    if not output_pdf:
-        output_pdf = default_name
-
-    if not output_pdf.lower().endswith(".pdf"):
-        output_pdf += ".pdf"
-
-    return output_pdf
-
-
-def ask_note_ratio():
-    while True:
-        value = input("ノート欄の比率を入力してください [1.0]: ").strip()
-
-        if not value:
-            return 1.0
-
-        try:
-            note_ratio = float(value)
-        except ValueError:
-            print("数値を入力してください。例: 1.0")
-            continue
-
-        if note_ratio <= 0:
-            print("0より大きい数値を入力してください。")
-            continue
-
-        return note_ratio
-
-
-if __name__ == "__main__":
-    input_pdf = ask_input_pdf()
-    output_pdf = ask_output_pdf(input_pdf)
-    note_ratio = ask_note_ratio()
-
-    print()
-    print("変換を開始します。")
-    print(f"入力PDF: {input_pdf}")
-    print(f"出力PDF: {output_pdf}")
-    print(f"ノート欄の比率: {note_ratio}")
-    print()
-
-    add_note_area(
-        input_pdf=input_pdf,
-        output_pdf=output_pdf,
-        note_ratio=note_ratio,
-        ruled=True
-    )
-
-    print("完了しました。")

@@ -1,0 +1,24 @@
+__pycache__/
+*.py[cod]
+*$py.class
+
+.venv/
+venv/
+env/
+
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+
+# PyInstaller outputs
+build/
+dist/
+
+# Local PDFs and generated outputs
+*.pdf
+
+# OS/editor files
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
