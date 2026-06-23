@@ -1,7 +1,9 @@
-# PDF Note Margin Maker
+# PDF Side Note Maker
 
-PDFの各ページの右側に、手書き用のノート欄を追加するWindows向けGUIツールです。
+PDFの各ページの右側に、手書き用のノート欄を追加するツールです。
 Goodnotesなどのノートアプリに読み込むと、PDF本文の横にメモ欄を作れます。
+
+ブラウザだけで動くWeb版と、Windows向けデスクトップ版を収録しています。
 
 ## できること
 
@@ -9,6 +11,7 @@ Goodnotesなどのノートアプリに読み込むと、PDF本文の横にメ�
 - ノート欄の幅を指定
 - 横罫線のあり/なしを選択
 - ページサイズが混在したPDFにも各ページごとのサイズで対応
+- Web版はPDFを外部サーバーへ送らず、端末内だけで変換
 
 ## 出力イメージ
 
@@ -32,24 +35,26 @@ Goodnotesなどのノートアプリに読み込むと、PDF本文の横にメ�
 └──────────────┴──────────────┘
 ```
 
-## すぐ使う場合
+## Web版
+
+[PDF Side Note Makerをブラウザで使う](https://kaico-hub.github.io/pdf-side-note-maker/)
+
+PDFはブラウザ内だけで処理され、外部サーバーには送信されません。
+
+### Web版の使い方
+
+1. PDFを選択するか、画面へドラッグ＆ドロップします。
+2. ノート欄の幅と横罫線の有無を選びます。
+3. 「ノート欄付きPDFを作成」を押します。
+4. 変換完了後、「保存する」からPDFをダウンロードします。
+
+## Windows版
 
 Pythonを入れずに使う場合は、以下のファイルをダブルクリックしてください。
 
-```text
-release/PDF Note Margin Maker.exe
-```
+[PDF Note Margin Maker.exe](release/PDF%20Note%20Margin%20Maker.exe)
 
-## 開発者向け
-
-```bash
-pip install -r requirements.txt
-```
-
-ソースから動作確認する場合は `app.py` を実行します。
-通常利用では `release/PDF Note Margin Maker.exe` を使ってください。
-
-## 使い方
+### Windows版の使い方
 
 画面で以下を選んでから「変換開始」を押してください。
 
@@ -69,39 +74,13 @@ pip install -r requirements.txt
 | `1.0` | 元PDFと同じ幅のノート欄 |
 | `1.2` | 元PDFより広いノート欄 |
 
-## exeを作る場合
-
-Windowsで `build_exe.bat` をダブルクリックすると、以下の配布用exeが更新されます。
-
-```text
-release/PDF Note Margin Maker.exe
-```
-
-初回は `pyinstaller` のインストールが走るため、インターネット接続が必要です。
-ビルド中に作られる `dist` と `build` はGit管理対象外です。
-
 ## 注意事項
 
 - パスワード付きPDFは処理できない場合があります。
 - DRM付きPDFは処理できない場合があります。
 - PDFのサイズが大きい場合、処理に時間がかかることがあります。
+- 大きなPDFをスマートフォンで変換すると、メモリ不足になる場合があります。
 - 画像主体のPDFでは、出力ファイルサイズが大きくなることがあります。
-- 変換前後のPDFは `.gitignore` でGit管理対象外にしています。
-
-## ファイル構成
-
-```text
-pdf_subnote/
-├── app.py           # GUI本体
-├── converter.py     # PDF変換ロジック
-├── release/
-│   └── PDF Note Margin Maker.exe
-├── build_exe.bat    # exe作成用
-├── pdf_note_margin_maker.spec
-├── requirements.txt
-├── LICENSE
-└── README.md
-```
 
 ## ライセンス
 

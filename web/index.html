@@ -1,0 +1,224 @@
+<!doctype html>
+<html lang="ja">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta
+      name="description"
+      content="PDFの右側に手書き用のノート欄を追加する、ブラウザ完結型の無料ツールです。"
+    />
+    <meta name="theme-color" content="#f5f1e8" />
+    <title>PDF Side Note Maker</title>
+    <link rel="stylesheet" href="./styles.css" />
+    <script
+      defer
+      src="https://cdn.jsdelivr.net/npm/pdf-lib@1.17.1/dist/pdf-lib.min.js"
+    ></script>
+    <script defer src="./app.js"></script>
+  </head>
+  <body>
+    <div class="page-shell">
+      <header class="site-header">
+        <a class="brand" href="./" aria-label="PDF Side Note Maker ホーム">
+          <span class="brand-mark" aria-hidden="true">
+            <svg viewBox="0 0 32 32" role="img">
+              <path d="M7 4.5h12l6 6V27.5H7z" />
+              <path d="M19 4.5v6h6M11 16h10M11 20h10M11 24h6" />
+            </svg>
+          </span>
+          <span>PDF Side Note Maker</span>
+        </a>
+        <span class="header-label">Browser edition</span>
+      </header>
+
+      <main>
+        <section class="hero" aria-labelledby="hero-title">
+          <div class="hero-copy">
+            <p class="eyebrow">MAKE ROOM FOR YOUR THOUGHTS</p>
+            <h1 id="hero-title">PDFのとなりに、<br />考える余白を。</h1>
+            <p class="hero-description">
+              資料の右側へノート欄を追加して、書き込みやすいPDFに変換します。
+              インストールもアップロードも必要ありません。
+            </p>
+            <div class="privacy-note">
+              <svg viewBox="0 0 24 24" aria-hidden="true">
+                <path d="M7 10V8a5 5 0 0 1 10 0v2M5 10h14v10H5z" />
+              </svg>
+              <span><strong>ブラウザ内だけで処理</strong> — PDFが外部へ送信されることはありません</span>
+            </div>
+          </div>
+
+          <div class="hero-visual" aria-hidden="true">
+            <div class="floating-note note-one">read<br />→ think<br />→ write</div>
+            <div class="hero-document">
+              <div class="document-content">
+                <span class="mock-title"></span>
+                <span></span><span></span><span></span><span></span><span></span>
+              </div>
+              <div class="document-notes">
+                <i></i><i></i><i></i><i></i><i></i><i></i>
+              </div>
+            </div>
+            <div class="floating-note note-two">（＞ω＜）</div>
+          </div>
+        </section>
+
+        <section class="maker" aria-labelledby="maker-title">
+          <div class="section-heading">
+            <div>
+              <p class="step-label">01 / SELECT &amp; CUSTOMIZE</p>
+              <h2 id="maker-title">ノート欄をつくる</h2>
+            </div>
+            <p>PDFを選び、好みの余白に整えてください。</p>
+          </div>
+
+          <div class="maker-grid">
+            <div class="control-panel">
+              <label class="drop-zone" id="drop-zone" for="pdf-input">
+                <input id="pdf-input" type="file" accept="application/pdf,.pdf" />
+                <span class="upload-icon" aria-hidden="true">
+                  <svg viewBox="0 0 32 32">
+                    <path d="M16 22V7M10 13l6-6 6 6M7 21v5h18v-5" />
+                  </svg>
+                </span>
+                <span class="drop-title">PDFをここにドロップ</span>
+                <span class="drop-subtitle">または <span>ファイルを選択</span></span>
+              </label>
+
+              <div class="file-card" id="file-card" hidden>
+                <span class="file-icon" aria-hidden="true">PDF</span>
+                <span class="file-details">
+                  <strong id="file-name"></strong>
+                  <small id="file-size"></small>
+                </span>
+                <button class="icon-button" id="remove-file" type="button" aria-label="選択を解除">
+                  <svg viewBox="0 0 24 24" aria-hidden="true">
+                    <path d="m7 7 10 10M17 7 7 17" />
+                  </svg>
+                </button>
+              </div>
+
+              <fieldset class="setting-group">
+                <legend>ノート欄の幅</legend>
+                <div class="ratio-options">
+                  <label>
+                    <input type="radio" name="ratio" value="0.5" />
+                    <span><strong>50%</strong><small>コンパクト</small></span>
+                  </label>
+                  <label>
+                    <input type="radio" name="ratio" value="0.65" />
+                    <span><strong>65%</strong><small>ほどよい</small></span>
+                  </label>
+                  <label>
+                    <input type="radio" name="ratio" value="1" checked />
+                    <span><strong>100%</strong><small>たっぷり</small></span>
+                  </label>
+                </div>
+                <label class="custom-ratio">
+                  <input type="radio" name="ratio" value="custom" />
+                  <span>カスタム</span>
+                  <span class="number-field">
+                    <input
+                      id="custom-ratio"
+                      type="number"
+                      min="10"
+                      max="300"
+                      step="5"
+                      value="80"
+                      aria-label="カスタム幅の割合"
+                      disabled
+                    />
+                    <span>%</span>
+                  </span>
+                </label>
+              </fieldset>
+
+              <div class="setting-row">
+                <span>
+                  <strong>横罫線</strong>
+                  <small>手書きのガイド線を追加します</small>
+                </span>
+                <label class="switch">
+                  <input id="ruled" type="checkbox" checked />
+                  <span aria-hidden="true"></span>
+                  <span class="sr-only">横罫線を追加する</span>
+                </label>
+              </div>
+
+              <button class="convert-button" id="convert-button" type="button" disabled>
+                <span>ノート欄付きPDFを作成</span>
+                <svg viewBox="0 0 24 24" aria-hidden="true">
+                  <path d="M5 12h14M14 7l5 5-5 5" />
+                </svg>
+              </button>
+
+              <div class="status" id="status" aria-live="polite" hidden>
+                <div class="status-line">
+                  <span id="status-text">PDFを準備しています…</span>
+                  <span id="status-percent">0%</span>
+                </div>
+                <div class="progress-track"><span id="progress-bar"></span></div>
+              </div>
+
+              <div class="result-card" id="result-card" hidden>
+                <span class="result-check" aria-hidden="true">
+                  <svg viewBox="0 0 24 24"><path d="m6 12 4 4 8-9" /></svg>
+                </span>
+                <span>
+                  <strong>変換が完了しました</strong>
+                  <small id="result-summary"></small>
+                </span>
+                <a class="download-button" id="download-button" href="#" download>保存する</a>
+              </div>
+            </div>
+
+            <aside class="preview-panel" aria-labelledby="preview-title">
+              <div class="preview-heading">
+                <span id="preview-title">仕上がりイメージ</span>
+                <span id="ratio-badge">本文 1 : ノート 1</span>
+              </div>
+              <div class="preview-stage">
+                <div class="preview-paper" id="preview-paper">
+                  <div class="preview-source">
+                    <strong>PDF CONTENT</strong>
+                    <i class="long"></i><i></i><i></i><i class="short"></i>
+                    <i class="long space"></i><i></i><i class="short"></i>
+                  </div>
+                  <div class="preview-notes" id="preview-notes">
+                    <span>NOTES</span>
+                    <i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i>
+                  </div>
+                </div>
+              </div>
+              <p class="preview-caption">実際のページサイズに合わせて、各ページを個別に拡張します。</p>
+            </aside>
+          </div>
+        </section>
+
+        <section class="features" aria-label="このツールの特徴">
+          <article>
+            <span>01</span>
+            <h3>端末内で完結</h3>
+            <p>ファイルをサーバーへアップロードせず、お使いのブラウザだけで変換します。</p>
+          </article>
+          <article>
+            <span>02</span>
+            <h3>ページごとに最適化</h3>
+            <p>異なるサイズのページが混ざったPDFでも、それぞれの幅に合わせて処理します。</p>
+          </article>
+          <article>
+            <span>03</span>
+            <h3>すぐに書き込める</h3>
+            <p>変換したPDFをGoodnotesなどへ読み込み、そのままノートとして使えます。</p>
+          </article>
+        </section>
+      </main>
+
+      <footer>
+        <span>PDF Side Note Maker</span>
+        <span>PDFに、ちょうどいい余白を。</span>
+        <a href="https://github.com/Kaico-hub/pdf-side-note-maker" rel="noreferrer">GitHub</a>
+      </footer>
+    </div>
+  </body>
+</html>
