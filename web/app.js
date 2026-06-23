@@ -259,7 +259,7 @@ async function convertPdf() {
     state.processing = false;
     elements.convertButton.disabled = !state.file;
     elements.convertButton.classList.remove("is-working");
-    elements.convertButton.querySelector("span").textContent = "ノート欄付きPDFを作成";
+    elements.convertButton.querySelector("span").textContent = "PDFを変換";
     elements.removeFile.disabled = false;
   }
 }
