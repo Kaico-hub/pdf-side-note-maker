@@ -4,7 +4,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="description" content="PDFの右側にノート欄を追加します。" />
-    <meta name="theme-color" content="#f6f7f6" />
+    <meta name="theme-color" content="#f5f1e8" />
     <title>PDF Note Margin Maker</title>
     <link rel="stylesheet" href="./styles.css" />
     <script
@@ -16,140 +16,141 @@
   <body>
     <header class="site-header">
       <a href="./">PDF Note Margin Maker</a>
-      <a class="github-link" href="https://github.com/Kaico-hub/pdf-side-note-maker" rel="noreferrer">
-        GitHub
-      </a>
+      <a href="https://github.com/Kaico-hub/pdf-side-note-maker" rel="noreferrer">GitHub</a>
     </header>
 
     <main>
-      <div class="page-title">
-        <h1>PDFにノート欄を追加</h1>
-        <p>PDFの各ページの右側に、書き込み用の余白を追加します。</p>
-      </div>
+      <section class="maker" aria-labelledby="maker-title">
+        <div class="section-heading">
+          <div>
+            <p>PDF NOTE MARGIN MAKER</p>
+            <h1 id="maker-title">ノート欄をつくる</h1>
+          </div>
+          <span>PDFを選び、ノート欄の設定をしてください。</span>
+        </div>
 
-      <div class="workspace">
-        <section class="controls" aria-label="変換設定">
-          <label class="drop-zone" id="drop-zone" for="pdf-input">
-            <input id="pdf-input" type="file" accept="application/pdf,.pdf" />
-            <span class="upload-icon" aria-hidden="true">
-              <svg viewBox="0 0 24 24">
-                <path d="M12 16V4M7 9l5-5 5 5M5 15v5h14v-5" />
-              </svg>
-            </span>
-            <strong>PDFを選択</strong>
-            <small>またはここにドラッグ＆ドロップ</small>
-          </label>
+        <div class="maker-grid">
+          <div class="control-panel">
+            <label class="drop-zone" id="drop-zone" for="pdf-input">
+              <input id="pdf-input" type="file" accept="application/pdf,.pdf" />
+              <span class="upload-icon" aria-hidden="true">
+                <svg viewBox="0 0 32 32">
+                  <path d="M16 22V7M10 13l6-6 6 6M7 21v5h18v-5" />
+                </svg>
+              </span>
+              <span class="drop-title">PDFをここにドロップ</span>
+              <span class="drop-subtitle">または <span>ファイルを選択</span></span>
+            </label>
 
-          <div class="file-card" id="file-card" hidden>
-            <span class="file-icon" aria-hidden="true">PDF</span>
-            <span class="file-details">
-              <strong id="file-name"></strong>
-              <small id="file-size"></small>
-            </span>
-            <button class="icon-button" id="remove-file" type="button" aria-label="選択を解除">
+            <div class="file-card" id="file-card" hidden>
+              <span class="file-icon" aria-hidden="true">PDF</span>
+              <span class="file-details">
+                <strong id="file-name"></strong>
+                <small id="file-size"></small>
+              </span>
+              <button class="icon-button" id="remove-file" type="button" aria-label="選択を解除">
+                <svg viewBox="0 0 24 24" aria-hidden="true">
+                  <path d="m7 7 10 10M17 7 7 17" />
+                </svg>
+              </button>
+            </div>
+
+            <fieldset class="setting-group">
+              <legend>ノート欄の幅</legend>
+              <div class="ratio-options">
+                <label>
+                  <input type="radio" name="ratio" value="0.5" />
+                  <span><strong>50%</strong><small>コンパクト</small></span>
+                </label>
+                <label>
+                  <input type="radio" name="ratio" value="0.65" />
+                  <span><strong>65%</strong><small>ほどよい</small></span>
+                </label>
+                <label>
+                  <input type="radio" name="ratio" value="1" checked />
+                  <span><strong>100%</strong><small>たっぷり</small></span>
+                </label>
+              </div>
+              <label class="custom-ratio">
+                <input type="radio" name="ratio" value="custom" />
+                <span>カスタム</span>
+                <span class="number-field">
+                  <input
+                    id="custom-ratio"
+                    type="number"
+                    min="10"
+                    max="300"
+                    step="5"
+                    value="80"
+                    aria-label="カスタム幅の割合"
+                    disabled
+                  />
+                  <span>%</span>
+                </span>
+              </label>
+            </fieldset>
+
+            <div class="setting-row">
+              <span>
+                <strong>横罫線</strong>
+                <small>手書きのガイド線を追加します</small>
+              </span>
+              <label class="switch">
+                <input id="ruled" type="checkbox" checked />
+                <span aria-hidden="true"></span>
+                <span class="sr-only">横罫線を追加する</span>
+              </label>
+            </div>
+
+            <button class="convert-button" id="convert-button" type="button" disabled>
+              <span>ノート欄付きPDFを作成</span>
               <svg viewBox="0 0 24 24" aria-hidden="true">
-                <path d="m7 7 10 10M17 7 7 17" />
+                <path d="M5 12h14M14 7l5 5-5 5" />
               </svg>
             </button>
-          </div>
 
-          <fieldset class="setting-group">
-            <legend>ノート欄の幅</legend>
-            <div class="ratio-options">
-              <label>
-                <input type="radio" name="ratio" value="0.5" />
-                <span>50%</span>
-              </label>
-              <label>
-                <input type="radio" name="ratio" value="0.65" />
-                <span>65%</span>
-              </label>
-              <label>
-                <input type="radio" name="ratio" value="1" checked />
-                <span>100%</span>
-              </label>
+            <div class="status" id="status" aria-live="polite" hidden>
+              <div class="status-line">
+                <span id="status-text">PDFを準備しています…</span>
+                <span id="status-percent">0%</span>
+              </div>
+              <div class="progress-track"><span id="progress-bar"></span></div>
             </div>
-            <label class="custom-ratio">
-              <input type="radio" name="ratio" value="custom" />
-              <span>カスタム</span>
-              <span class="number-field">
-                <input
-                  id="custom-ratio"
-                  type="number"
-                  min="10"
-                  max="300"
-                  step="5"
-                  value="80"
-                  aria-label="カスタム幅の割合"
-                  disabled
-                />
-                <span>%</span>
+
+            <div class="result-card" id="result-card" hidden>
+              <span class="result-check" aria-hidden="true">
+                <svg viewBox="0 0 24 24"><path d="m6 12 4 4 8-9" /></svg>
               </span>
-            </label>
-          </fieldset>
-
-          <div class="setting-row">
-            <label for="ruled">
-              <strong>横罫線</strong>
-              <small>ノート欄にガイド線を追加</small>
-            </label>
-            <label class="switch">
-              <input id="ruled" type="checkbox" checked />
-              <span aria-hidden="true"></span>
-              <span class="sr-only">横罫線を追加する</span>
-            </label>
-          </div>
-
-          <button class="convert-button" id="convert-button" type="button" disabled>
-            <span>PDFを変換</span>
-            <svg viewBox="0 0 24 24" aria-hidden="true">
-              <path d="M5 12h14M14 7l5 5-5 5" />
-            </svg>
-          </button>
-
-          <div class="status" id="status" aria-live="polite" hidden>
-            <div class="status-line">
-              <span id="status-text">PDFを準備しています…</span>
-              <span id="status-percent">0%</span>
-            </div>
-            <div class="progress-track"><span id="progress-bar"></span></div>
-          </div>
-
-          <div class="result-card" id="result-card" hidden>
-            <span class="result-check" aria-hidden="true">
-              <svg viewBox="0 0 24 24"><path d="m6 12 4 4 8-9" /></svg>
-            </span>
-            <span>
-              <strong>変換完了</strong>
-              <small id="result-summary"></small>
-            </span>
-            <a class="download-button" id="download-button" href="#" download>ダウンロード</a>
-          </div>
-        </section>
-
-        <aside class="preview-panel" aria-labelledby="preview-title">
-          <div class="preview-heading">
-            <span id="preview-title">プレビュー</span>
-            <span id="ratio-badge">本文 1 : ノート 1</span>
-          </div>
-          <div class="preview-stage">
-            <div class="preview-paper">
-              <div class="preview-source">
-                <strong>PDF</strong>
-                <i class="long"></i><i></i><i></i><i class="short"></i>
-                <i class="long space"></i><i></i><i class="short"></i>
-              </div>
-              <div class="preview-notes" id="preview-notes">
-                <span>NOTES</span>
-                <i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i>
-              </div>
+              <span>
+                <strong>変換が完了しました</strong>
+                <small id="result-summary"></small>
+              </span>
+              <a class="download-button" id="download-button" href="#" download>保存する</a>
             </div>
           </div>
-          <p>ファイルはブラウザ内で処理され、外部には送信されません。</p>
-        </aside>
-      </div>
+
+          <aside class="preview-panel" aria-labelledby="preview-title">
+            <div class="preview-heading">
+              <span id="preview-title">仕上がりイメージ</span>
+              <span id="ratio-badge">本文 1 : ノート 1</span>
+            </div>
+            <div class="preview-stage">
+              <div class="preview-paper" id="preview-paper">
+                <div class="preview-source">
+                  <strong>PDF CONTENT</strong>
+                  <i class="long"></i><i></i><i></i><i class="short"></i>
+                  <i class="long space"></i><i></i><i class="short"></i>
+                </div>
+                <div class="preview-notes" id="preview-notes">
+                  <span>NOTES</span>
+                  <i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i>
+                </div>
+              </div>
+            </div>
+            <p class="preview-caption">ページごとのサイズに合わせてノート欄を追加します。</p>
+          </aside>
+        </div>
+      </section>
     </main>
-
-    <footer>PDF Note Margin Maker</footer>
   </body>
 </html>
